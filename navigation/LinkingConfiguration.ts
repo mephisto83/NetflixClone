@@ -18,6 +18,7 @@ export default {
           },
         },
       },
+      SignIn:'signin',
       NotFound: '*',
     },
   },

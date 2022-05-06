@@ -2,21 +2,31 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Amplify from 'aws-amplify';
-import { withAuthenticator } from 'aws-amplify-react-native';
+// import { withAuthenticator } from 'aws-amplify-react-native';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-import config from './aws-exports';
+import Navigation, { SigninNavigation } from './navigation';
+import useAuth from './auth/auth';
+// import config from './aws-exports';
 
-Amplify.configure(config);
+// Amplify.configure(config);
 
 function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  const { isAuthSetup, signedIn, signIn } = useAuth();
 
-  if (!isLoadingComplete) {
+  if (!isLoadingComplete || !isAuthSetup) {
+    console.log('not loaded')
     return null;
+  } else if (true) {
+    console.log('signin screen')
+    return (
+      <SafeAreaProvider>
+        <SigninNavigation colorScheme={colorScheme} />
+      </SafeAreaProvider>
+    );
   } else {
     return (
       <SafeAreaProvider>
@@ -27,4 +37,4 @@ function App() {
   }
 }
 
-export default withAuthenticator(App);
+export default App;// withAuthenticator(App);
